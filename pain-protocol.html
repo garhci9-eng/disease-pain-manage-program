@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통증 평가 및 처방 프로토콜 | Pain Management Manual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e14;
+    --surface: #111620;
+    --surface2: #171d2b;
+    --border: #1e2840;
+    --accent: #3b82f6;
+    --accent2: #06b6d4;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --success: #10b981;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'IBM Plex Sans KR', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    background: rgba(10,14,20,0.95);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .logo-text {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    letter-spacing: -0.01em;
+  }
+  .logo-sub {
+    font-size: 0.65rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: -2px;
+  }
+  .header-badge {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--accent2);
+    border: 1px solid var(--accent2);
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── LAYOUT ── */
+  .main-wrap {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: calc(100vh - 64px);
+  }
+
+  /* ── SIDEBAR ── */
+  aside {
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .nav-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1rem 0.75rem 0.5rem;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--muted);
+    transition: all 0.15s;
+    border: 1px solid transparent;
+    font-weight: 400;
+  }
+  .nav-item:hover { background: var(--surface); color: var(--text); }
+  .nav-item.active {
+    background: var(--surface2);
+    color: var(--accent);
+    border-color: var(--border);
+  }
+  .nav-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── CONTENT ── */
+  main {
+    padding: 2.5rem 3rem;
+    max-width: 900px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ── PAGE TITLE ── */
+  .page-title {
+    font-family: var(--serif);
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+    line-height: 1.1;
+  }
+  .page-desc {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  /* ── PAIN SCALE ── */
+  .pain-scale-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+  .scale-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .scale-title {
+    font-size: 0.8rem;
+    font-family: var(--mono);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .current-score {
+    font-family: var(--serif);
+    font-size: 3.5rem;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+
+  .slider-wrap {
+    position: relative;
+    padding: 1.5rem 0 2rem;
+  }
+  .pain-slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    background: linear-gradient(to right, #10b981, #f59e0b, #ef4444);
+  }
+  .pain-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    border: 3px solid var(--accent);
+    cursor: grab;
+    box-shadow: 0 0 0 6px rgba(59,130,246,0.15);
+    transition: box-shadow 0.2s;
+  }
+  .pain-slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    box-shadow: 0 0 0 10px rgba(59,130,246,0.25);
+  }
+  .scale-ticks {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+  }
+  .tick {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-align: center;
+    cursor: pointer;
+    transition: color 0.2s;
+    min-width: 20px;
+  }
+  .tick:hover { color: var(--text); }
+
+  /* ── FACE SCALE ── */
+  .face-scale {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .face-btn {
+    flex: 1;
+    min-width: 50px;
+    padding: 0.75rem 0.25rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg);
+    cursor: pointer;
+    text-align: center;
+    font-size: 1.6rem;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .face-btn span.score-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .face-btn:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .face-btn.selected {
+    border-color: var(--accent);
+    background: rgba(59,130,246,0.1);
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.3);
+  }
+
+  /* ── SEVERITY BADGE ── */
+  .severity-band {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    border: 1px solid;
+    transition: all 0.3s;
+  }
+  .severity-icon { font-size: 1.5rem; }
+  .severity-label { font-weight: 600; font-size: 1rem; }
+  .severity-desc { font-size: 0.8rem; opacity: 0.75; margin-top: 2px; }
+
+  /* ── PROTOCOL CARDS ── */
+  .protocol-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .protocol-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .protocol-card:hover { border-color: rgba(59,130,246,0.4); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .card-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .step-badge {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    background: rgba(59,130,246,0.15);
+    color: var(--accent);
+    border: 1px solid rgba(59,130,246,0.3);
+    white-space: nowrap;
+  }
+  .card-title { font-weight: 600; font-size: 0.95rem; }
+  .card-subtitle { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .expand-icon {
+    color: var(--muted);
+    font-size: 0.75rem;
+    transition: transform 0.2s;
+    font-family: var(--mono);
+  }
+  .protocol-card.open .expand-icon { transform: rotate(90deg); }
+
+  .card-body {
+    display: none;
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .protocol-card.open .card-body { display: block; }
+
+  .drug-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.83rem;
+    margin-top: 0.75rem;
+  }
+  .drug-table th {
+    text-align: left;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+  .drug-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid rgba(30,40,64,0.5);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .drug-table tr:last-child td { border-bottom: none; }
+  .drug-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .drug-name { font-weight: 600; color: var(--accent2); }
+  .drug-dose { font-family: var(--mono); font-size: 0.8rem; color: #a5b4fc; }
+
+  .alert-box {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .alert-box.warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
+  .alert-box.danger { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; }
+  .alert-box.info { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); color: #93c5fd; }
+
+  /* ── WHO LADDER ── */
+  .who-ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .ladder-step {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .ladder-step:last-child { border-bottom: none; }
+  .ladder-num {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem 1rem;
+    font-family: var(--serif);
+    font-size: 2rem;
+    border-right: 1px solid var(--border);
+  }
+  .ladder-num small {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+  .ladder-content {
+    padding: 1.25rem 1.5rem;
+  }
+  .ladder-content h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+  .ladder-content p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+  }
+  .pill {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+
+  /* ── VAS/NRS SECTION ── */
+  .score-display-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .score-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .score-card-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.5rem;
+  }
+  .score-card-value {
+    font-family: var(--serif);
+    font-size: 2rem;
+  }
+  .score-card-sub { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; }
+
+  /* ── CHECKLIST ── */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    border: 1px solid transparent;
+  }
+  .check-item:hover { background: var(--surface2); }
+  .check-item.done {
+    background: rgba(16,185,129,0.05);
+    border-color: rgba(16,185,129,0.2);
+  }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    transition: all 0.15s;
+  }
+  .check-item.done .check-box {
+    background: var(--success);
+    border-color: var(--success);
+  }
+  .check-text { font-size: 0.875rem; line-height: 1.5; }
+  .check-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+  /* ── EQUIANALGESIC TABLE ── */
+  .equi-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    margin: 1rem 0;
+  }
+  .equi-table thead th {
+    background: var(--surface2);
+    padding: 0.65rem 1rem;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border);
+  }
+  .equi-table tbody td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    line-height: 1.5;
+  }
+  .equi-table tbody tr:hover td { background: var(--surface2); }
+  .equi-table tbody tr:last-child td { border-bottom: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .main-wrap { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; flex-direction: row; flex-wrap: wrap; gap: 0.5rem; padding: 1rem; }
+    main { padding: 1.5rem; }
+    .score-display-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .section.active { animation: fadeUp 0.25s ease-out; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Print */
+  @media print {
+    aside, header .header-badge { display: none; }
+    .main-wrap { grid-template-columns: 1fr; }
+    .section { display: block !important; }
+    .card-body { display: block !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🩺</div>
+    <div>
+      <div class="logo-text">통증 관리 프로토콜</div>
+      <span class="logo-sub">Pain Management Manual v2.1</span>
+    </div>
+  </div>
+  <span class="header-badge">임상 참조용 · FOR CLINICAL USE</span>
+</header>
+
+<div class="main-wrap">
+<aside>
+  <div class="nav-label">평가 도구</div>
+  <div class="nav-item active" onclick="showSection('assess')">
+    <span class="nav-dot" style="background:#3b82f6"></span> 통증 평가 (NRS/VAS)
+  </div>
+  <div class="nav-item" onclick="showSection('who')">
+    <span class="nav-dot" style="background:#06b6d4"></span> WHO 진통제 계단
+  </div>
+
+  <div class="nav-label">처방 프로토콜</div>
+  <div class="nav-item" onclick="showSection('mild')">
+    <span class="nav-dot" style="background:#10b981"></span> 경증 통증 (1–3)
+  </div>
+  <div class="nav-item" onclick="showSection('moderate')">
+    <span class="nav-dot" style="background:#f59e0b"></span> 중등도 통증 (4–6)
+  </div>
+  <div class="nav-item" onclick="showSection('severe')">
+    <span class="nav-dot" style="background:#ef4444"></span> 중증 통증 (7–10)
+  </div>
+
+  <div class="nav-label">참조</div>
+  <div class="nav-item" onclick="showSection('equi')">
+    <span class="nav-dot" style="background:#8b5cf6"></span> 동등 진통 용량표
+  </div>
+  <div class="nav-item" onclick="showSection('checklist')">
+    <span class="nav-dot" style="background:#ec4899"></span> 처방 전 체크리스트
+  </div>
+</aside>
+
+<main>
+
+<!-- ═══ SECTION: ASSESS ═══ -->
+<div class="section active" id="section-assess">
+  <div class="page-title">통증 평가</div>
+  <div class="page-desc">숫자 평가 척도(NRS) 또는 시각 아날로그 척도(VAS)를 사용하여 현재 통증 강도를 측정합니다.</div>
+
+  <div class="pain-scale-container">
+    <div class="scale-header">
+      <div>
+        <div class="scale-title">NRS — Numeric Rating Scale</div>
+        <div style="font-size:0.8rem;color:var(--muted);margin-top:4px">"지금 통증이 어느 정도인가요? 0은 통증 없음, 10은 상상할 수 없는 최악의 통증입니다."</div>
+      </div>
+      <div class="current-score" id="nrs-score" style="color:#10b981">0</div>
+    </div>
+
+    <!-- Face scale -->
+    <div class="face-scale" id="face-scale">
+      <button class="face-btn selected" onclick="setScore(0)">😊<span class="score-label">0</span></button>
+      <button class="face-btn" onclick="setScore(1)">🙂<span class="score-label">1–2</span></button>
+      <button class="face-btn" onclick="setScore(3)">😐<span class="score-label">3–4</span></button>
+      <button class="face-btn" onclick="setScore(5)">😟<span class="score-label">5–6</span></button>
+      <button class="face-btn" onclick="setScore(7)">😣<span class="score-label">7–8</span></button>
+      <button class="face-btn" onclick="setScore(9)">😭<span class="score-label">9–10</span></button>
+    </div>
+
+    <div class="slider-wrap">
+      <input type="range" class="pain-slider" id="pain-slider" min="0" max="10" value="0" oninput="updateScore(this.value)">
+      <div class="scale-ticks">
+        <span class="tick" onclick="setScore(0)">0<br><span style="font-size:0.6rem;opacity:0.5">없음</span></span>
+        <span class="tick" onclick="setScore(1)">1</span>
+        <span class="tick" onclick="setScore(2)">2</span>
+        <span class="tick" onclick="setScore(3)">3</span>
+        <span class="tick" onclick="setScore(4)">4</span>
+        <span class="tick" onclick="setScore(5)">5<br><span style="font-size:0.6rem;opacity:0.5">중등</span></span>
+        <span class="tick" onclick="setScore(6)">6</span>
+        <span class="tick" onclick="setScore(7)">7</span>
+        <span class="tick" onclick="setScore(8)">8</span>
+        <span class="tick" onclick="setScore(9)">9</span>
+        <span class="tick" onclick="setScore(10)">10<br><span style="font-size:0.6rem;opacity:0.5">최악</span></span>
+      </div>
+    </div>
+
+    <div class="severity-band" id="severity-band" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.3);color:#6ee7b7">
+      <span class="severity-icon">✅</span>
+      <div>
+        <div class="severity-label" id="severity-label">통증 없음</div>
+        <div class="severity-desc" id="severity-desc">현재 약물 처방이 필요하지 않습니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="score-display-grid">
+    <div class="score-card">
+      <div class="score-card-label">NRS</div>
+      <div class="score-card-value" id="display-nrs" style="color:var(--success)">0 / 10</div>
+      <div class="score-card-sub">Numeric Rating Scale</div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">VAS 추정치</div>
+      <div class="score-card-value" id="display-vas" style="color:var(--accent)">0 mm</div>
+      <div class="score-card-sub">Visual Analog Scale</div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">권장 단계</div>
+      <div class="score-card-value" id="display-step" style="color:var(--accent2)">—</div>
+      <div class="score-card-sub">WHO 진통제 계단</div>
+    </div>
+  </div>
+
+  <div class="alert-box info">
+    ℹ️ &nbsp;NRS는 self-report 기반이며, 인지기능 저하 환자에게는 <strong>CPOT</strong> 또는 <strong>FLACC</strong> 척도를 병행하십시오. 소아(3–7세)에는 <strong>Wong-Baker FACES</strong>를 우선 적용합니다.
+  </div>
+</div>
+
+<!-- ═══ SECTION: WHO LADDER ═══ -->
+<div class="section" id="section-who">
+  <div class="page-title">WHO 진통제 계단</div>
+  <div class="page-desc">세계보건기구(WHO)의 3단계 진통제 사다리 원칙. 구강 투여(by mouth) → 시간 투여(by the clock) → 계단식(by the ladder) → 개인 맞춤(for the individual) 원칙을 따릅니다.</div>
+
+  <div class="who-ladder">
+    <div class="ladder-step" style="background:rgba(16,185,129,0.04)">
+      <div class="ladder-num" style="color:#10b981">1<small>단계</small></div>
+      <div class="ladder-content">
+        <h4>경증 통증 · NRS 1–3</h4>
+        <p>비오피오이드 진통제 단독 사용. 보조 진통제 병용 가능.</p>
+        <div class="pill-list">
+          <span class="pill" style="color:#10b981;border-color:rgba(16,185,129,0.3)">아세트아미노펜</span>
+          <span class="pill" style="color:#10b981;border-color:rgba(16,185,129,0.3)">NSAIDs</span>
+          <span class="pill" style="color:#10b981;border-color:rgba(16,185,129,0.3)">COX-2 억제제</span>
+          <span class="pill" style="color:#10b981;border-color:rgba(16,185,129,0.3)">± 보조 진통제</span>
+        </div>
+      </div>
+    </div>
+    <div class="ladder-step" style="background:rgba(245,158,11,0.04)">
+      <div class="ladder-num" style="color:#f59e0b">2<small>단계</small></div>
+      <div class="ladder-content">
+        <h4>중등도 통증 · NRS 4–6</h4>
+        <p>약한 오피오이드 + 비오피오이드 ± 보조 진통제 병용.</p>
+        <div class="pill-list">
+          <span class="pill" style="color:#f59e0b;border-color:rgba(245,158,11,0.3)">트라마돌</span>
+          <span class="pill" style="color:#f59e0b;border-color:rgba(245,158,11,0.3)">코데인</span>
+          <span class="pill" style="color:#f59e0b;border-color:rgba(245,158,11,0.3)">하이드로코돈</span>
+          <span class="pill" style="color:#f59e0b;border-color:rgba(245,158,11,0.3)">± 아세트아미노펜</span>
+          <span class="pill" style="color:#f59e0b;border-color:rgba(245,158,11,0.3)">± NSAIDs</span>
+        </div>
+      </div>
+    </div>
+    <div class="ladder-step" style="background:rgba(239,68,68,0.04)">
+      <div class="ladder-num" style="color:#ef4444">3<small>단계</small></div>
+      <div class="ladder-content">
+        <h4>중증 통증 · NRS 7–10</h4>
+        <p>강한 오피오이드 + 비오피오이드 ± 보조 진통제 병용. 지속 방출 + 속효성 구제 요법 병행.</p>
+        <div class="pill-list">
+          <span class="pill" style="color:#ef4444;border-color:rgba(239,68,68,0.3)">모르핀</span>
+          <span class="pill" style="color:#ef4444;border-color:rgba(239,68,68,0.3)">옥시코돈</span>
+          <span class="pill" style="color:#ef4444;border-color:rgba(239,68,68,0.3)">펜타닐</span>
+          <span class="pill" style="color:#ef4444;border-color:rgba(239,68,68,0.3)">하이드로모르폰</span>
+          <span class="pill" style="color:#ef4444;border-color:rgba(239,68,68,0.3)">메타돈</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-box info">
+    💡 &nbsp;WHO 계단은 <strong>암성 통증</strong>에서 시작되었으나, 현재는 만성 비암성 통증에도 광범위하게 적용됩니다. 계단은 반드시 순서대로 올라갈 필요 없이, <strong>통증 강도에 맞는 단계에서 시작</strong>할 수 있습니다.
+  </div>
+</div>
+
+<!-- ═══ SECTION: MILD ═══ -->
+<div class="section" id="section-mild">
+  <div class="page-title">경증 통증 처방</div>
+  <div class="page-desc">NRS 1–3 / VAS 0–30 mm. 비오피오이드 단독 치료를 원칙으로 합니다.</div>
+
+  <div class="severity-band" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.3);color:#6ee7b7;margin-bottom:1.5rem">
+    <span class="severity-icon">🟢</span>
+    <div>
+      <div class="severity-label">WHO Step 1 — 비오피오이드</div>
+      <div class="severity-desc">아세트아미노펜 또는 NSAIDs를 1차 선택으로 사용. 부종·염증 동반 시 NSAIDs 우선.</div>
+    </div>
+  </div>
+
+  <div class="protocol-grid">
+    <div class="protocol-card open">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">1차 선택</span>
+          <div>
+            <div class="card-title">아세트아미노펜 (Acetaminophen)</div>
+            <div class="card-subtitle">간독성 위험 낮음 · 위장 부작용 적음</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>용량</th><th>투여 간격</th><th>최대 일일 용량</th><th>주의</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">타이레놀 325mg</span></td><td class="drug-dose">325–1000 mg</td><td>4–6시간마다</td><td>4,000 mg/일</td><td>간기능 저하시 2,000 mg</td></tr>
+            <tr><td><span class="drug-name">타이레놀ER 650mg</span></td><td class="drug-dose">650–1300 mg</td><td>8시간마다</td><td>4,000 mg/일</td><td>서방형, 공복 복용 가능</td></tr>
+            <tr><td><span class="drug-name">데노간 주</span><br><small style="color:var(--muted)">(IV acetaminophen)</small></td><td class="drug-dose">1,000 mg / 100mL</td><td>6시간마다</td><td>4,000 mg/일</td><td>15분 이상 천천히 정주</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box warn">⚠️ &nbsp;알코올 다용자, 간질환, 영양결핍 환자: 최대 2,000 mg/일로 감량. 복합제(감기약 등) 중복 투약에 주의.</div>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">1차 선택</span>
+          <div>
+            <div class="card-title">NSAIDs — 비선택적</div>
+            <div class="card-subtitle">염증성 통증, 근골격계 통증에 우선</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>용량</th><th>투여 간격</th><th>최대 일일 용량</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">이부프로펜</span></td><td class="drug-dose">200–400 mg</td><td>4–6시간마다</td><td>2,400 mg/일</td><td>식후 복용 권장</td></tr>
+            <tr><td><span class="drug-name">나프록센</span></td><td class="drug-dose">250–500 mg</td><td>8–12시간마다</td><td>1,500 mg/일</td><td>반감기 길어 1일 2회 가능</td></tr>
+            <tr><td><span class="drug-name">디클로페낙 나트륨</span></td><td class="drug-dose">50 mg</td><td>8시간마다</td><td>150 mg/일</td><td>장용정, 공복 피함</td></tr>
+            <tr><td><span class="drug-name">케토로락</span><br><small style="color:var(--muted)">(Ketorolac IV/IM)</small></td><td class="drug-dose">15–30 mg</td><td>6시간마다</td><td>120 mg/일</td><td><strong>최대 5일 이내 사용</strong></td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box danger">🚫 &nbsp;위장관 출혈/궤양 병력, eGFR &lt;30, 심부전, 아스피린 알레르기, 임신 3기: 금기. 65세 이상: PPI 병용 고려.</div>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">COX-2 선택적</span>
+          <div>
+            <div class="card-title">COX-2 억제제</div>
+            <div class="card-subtitle">위장 부작용 적음 · 심혈관 위험 주의</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>용량</th><th>투여 간격</th><th>최대 일일 용량</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">셀레콕시브</span></td><td class="drug-dose">100–200 mg</td><td>12–24시간마다</td><td>400 mg/일</td><td>아스피린 알레르기 시 주의</td></tr>
+            <tr><td><span class="drug-name">에토리콕시브</span></td><td class="drug-dose">60–120 mg</td><td>24시간마다</td><td>120 mg/일</td><td>고혈압 조절 확인 필요</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box warn">⚠️ &nbsp;심혈관 질환(관상동맥질환, 뇌졸중) 환자에서 심근경색/뇌졸중 위험 증가. 최단 기간, 최소 유효 용량 사용.</div>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">보조 진통제</span>
+          <div>
+            <div class="card-title">신경병증성 통증 보조제</div>
+            <div class="card-subtitle">작열감, 저림, 전기 충격통 동반 시</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>시작 용량</th><th>목표 용량</th><th>적응증</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">가바펜틴</span></td><td class="drug-dose">100–300 mg hs</td><td>300–1200 mg TID</td><td>신경병증성 통증, PHN</td></tr>
+            <tr><td><span class="drug-name">프레가발린</span></td><td class="drug-dose">25–75 mg hs</td><td>150–300 mg BID</td><td>당뇨병성 신경병증, FM</td></tr>
+            <tr><td><span class="drug-name">아미트리프틸린</span></td><td class="drug-dose">10 mg hs</td><td>25–75 mg hs</td><td>신경병증성 통증, 섬유근육통</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: MODERATE ═══ -->
+<div class="section" id="section-moderate">
+  <div class="page-title">중등도 통증 처방</div>
+  <div class="page-desc">NRS 4–6 / VAS 31–60 mm. 약한 오피오이드 + 비오피오이드 병용을 원칙으로 합니다.</div>
+
+  <div class="severity-band" style="background:rgba(245,158,11,0.06);border-color:rgba(245,158,11,0.3);color:#fcd34d;margin-bottom:1.5rem">
+    <span class="severity-icon">🟡</span>
+    <div>
+      <div class="severity-label">WHO Step 2 — 약한 오피오이드 + 비오피오이드</div>
+      <div class="severity-desc">트라마돌 또는 코데인 기반 복합제 사용. 24–48시간 후 재평가 필수.</div>
+    </div>
+  </div>
+
+  <div class="protocol-grid">
+    <div class="protocol-card open">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">1차 선택</span>
+          <div>
+            <div class="card-title">트라마돌 (Tramadol)</div>
+            <div class="card-subtitle">뮤-오피오이드 수용체 + SNRI 이중 기전</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>용량</th><th>투여 간격</th><th>최대 일일 용량</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">트리돌 50mg</span><br><small style="color:var(--muted)">(속효성)</small></td><td class="drug-dose">50–100 mg</td><td>4–6시간마다</td><td>400 mg/일</td><td>초기: 50 mg으로 시작, 3일 후 증량</td></tr>
+            <tr><td><span class="drug-name">트리돌 SR 100mg</span><br><small style="color:var(--muted)">(서방형)</small></td><td class="drug-dose">100–200 mg</td><td>12시간마다</td><td>400 mg/일</td><td>씹지 말고 통째로 삼킴</td></tr>
+            <tr><td><span class="drug-name">울트라셋</span><br><small style="color:var(--muted)">(트라마돌+AAP)</small></td><td class="drug-dose">37.5/325 mg 1–2정</td><td>4–6시간마다</td><td>8정/일</td><td>아세트아미노펜 용량 누적 주의</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box danger">🚫 &nbsp;MAO 억제제 동시 사용 금기(세로토닌 증후군). 간질 환자, 세로토닌 증후군 위험군 주의. eGFR &lt;30: 투여 간격 연장(12시간마다).</div>
+        <div class="alert-box warn">⚠️ &nbsp;오심/구토: 초반 2–3일이 가장 심함. 필요시 메토클로프라미드 병용. 변비 예방: 완하제 선제적 처방 고려.</div>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">대안</span>
+          <div>
+            <div class="card-title">코데인 (Codeine)</div>
+            <div class="card-subtitle">CYP2D6 대사 — EM/PM 유전형 영향</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>용량</th><th>투여 간격</th><th>최대 일일 용량</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">코데인 인산염</span></td><td class="drug-dose">15–60 mg</td><td>4–6시간마다</td><td>360 mg/일</td><td>아세트아미노펜 병용 가능</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box warn">⚠️ &nbsp;CYP2D6 poor metabolizer(~7–10%)에서 효과 없음. Ultra-rapid metabolizer에서 과다 모르핀 변환 위험. 소아 편도/아데노이드 수술 후 금기.</div>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">신경병증성</span>
+          <div>
+            <div class="card-title">둘록세틴 / SNRI</div>
+            <div class="card-subtitle">만성 통증, 당뇨병성 신경병증에 효과적</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>시작 용량</th><th>목표 용량</th><th>적응증</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">둘록세틴</span></td><td class="drug-dose">30 mg qd</td><td>60 mg qd</td><td>당뇨병성 신경병증, 섬유근육통, 만성 요통</td></tr>
+            <tr><td><span class="drug-name">벤라팍신</span></td><td class="drug-dose">37.5 mg qd</td><td>150 mg qd</td><td>신경병증성 통증</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">근육통</span>
+          <div>
+            <div class="card-title">근이완제 병용</div>
+            <div class="card-subtitle">근육 경련·긴장 동반 시 단기 병용</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>용량</th><th>투여 간격</th><th>주의</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">클로르족사존</span></td><td class="drug-dose">250–500 mg</td><td>TID–QID</td><td>졸음, 운전 주의</td></tr>
+            <tr><td><span class="drug-name">에페리손</span></td><td class="drug-dose">50–150 mg</td><td>TID</td><td>상대적으로 졸음 적음</td></tr>
+            <tr><td><span class="drug-name">티자니딘</span></td><td class="drug-dose">2–4 mg</td><td>TID</td><td>간독성 모니터링, 항고혈압제 상호작용</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box info">ℹ️ &nbsp;근이완제는 급성기(2–4주) 단기 사용 권장. 장기 사용 시 의존성 및 인지기능 저하 위험.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: SEVERE ═══ -->
+<div class="section" id="section-severe">
+  <div class="page-title">중증 통증 처방</div>
+  <div class="page-desc">NRS 7–10 / VAS 61–100 mm. 강한 오피오이드가 필요하며, 반드시 정기적 재평가와 부작용 모니터링이 수반되어야 합니다.</div>
+
+  <div class="severity-band" style="background:rgba(239,68,68,0.06);border-color:rgba(239,68,68,0.3);color:#fca5a5;margin-bottom:1.5rem">
+    <span class="severity-icon">🔴</span>
+    <div>
+      <div class="severity-label">WHO Step 3 — 강한 오피오이드 + 복합 치료</div>
+      <div class="severity-desc">지속형(ATC) + 속효성 구제 요법. 24시간 통증 제어 후 72시간 내 재평가.</div>
+    </div>
+  </div>
+
+  <div class="alert-box danger" style="margin-bottom:1.5rem">
+    🚨 &nbsp;<strong>오피오이드 처방 전 필수 확인:</strong> 마약류 처방 자격 확인, 통증 원인 및 기저 진단 확인, 마약류 의약품 안전사용 서비스(DUR) 조회, 이전 오피오이드 사용력 및 남용 위험 평가(ORT), 동의서 확인
+  </div>
+
+  <div class="protocol-grid">
+    <div class="protocol-card open">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">기준 약물</span>
+          <div>
+            <div class="card-title">모르핀 (Morphine)</div>
+            <div class="card-subtitle">WHO 권장 표준 오피오이드 · 동등 용량 기준</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>경구 용량</th><th>비경구 용량</th><th>투여 간격</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">MSIR<br><small style="color:var(--muted)">(속효성)</small></span></td><td class="drug-dose">5–15 mg PO</td><td>2–5 mg IV/SC</td><td>4시간마다</td><td>구제 용량: 4시간 용량의 1/6</td></tr>
+            <tr><td><span class="drug-name">MS Contin<br><small style="color:var(--muted)">(서방형)</small></span></td><td class="drug-dose">15–30 mg PO</td><td>—</td><td>12시간마다</td><td>씹지 말 것, 속효성과 병용</td></tr>
+            <tr><td><span class="drug-name">모르핀 IV PCA</span></td><td class="drug-dose">—</td><td>기저: 1–2 mg/h<br>Bolus: 1–2 mg</td><td>Lock-out: 10–15분</td><td>호흡수·SpO₂ 모니터링</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box warn">⚠️ &nbsp;신부전(eGFR&lt;30): 활성 대사체 M6G 축적 → 용량 50% 감량 또는 다른 오피오이드로 전환. 용량 적정: 24시간마다 25–50% 씩 증량 가능.</div>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">일반적 사용</span>
+          <div>
+            <div class="card-title">옥시코돈 (Oxycodone)</div>
+            <div class="card-subtitle">경구 생체이용률 높음 · 신부전에 상대적 안전</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>용량</th><th>투여 간격</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">옥시콘틴 CR<br><small style="color:var(--muted)">(서방형)</small></span></td><td class="drug-dose">10–80 mg PO</td><td>12시간마다</td><td>모르핀 대비 경구 1.5배 효력</td></tr>
+            <tr><td><span class="drug-name">옥시코돈 IR<br><small style="color:var(--muted)">(속효성)</small></span></td><td class="drug-dose">5–15 mg PO</td><td>4–6시간마다</td><td>구제 요법으로 사용</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">경피 투여</span>
+          <div>
+            <div class="card-title">펜타닐 패치 (Fentanyl TDS)</div>
+            <div class="card-subtitle">경구 투여 불가 환자 · 안정적 통증에 적합</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>용량</th><th>교체 주기</th><th>동등 경구 모르핀</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td class="drug-dose">12.5 μg/h</td><td>72시간마다</td><td>~45 mg/일</td><td rowspan="4" style="vertical-align:middle">모발이 없는 상체 피부에 부착.<br>열 노출(열탕, 전기담요) 시 흡수 급증 위험.</td></tr>
+            <tr><td class="drug-dose">25 μg/h</td><td>72시간마다</td><td>~90 mg/일</td></tr>
+            <tr><td class="drug-dose">50 μg/h</td><td>72시간마다</td><td>~180 mg/일</td></tr>
+            <tr><td class="drug-dose">75–100 μg/h</td><td>72시간마다</td><td>~270–360 mg/일</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box danger">🚫 &nbsp;오피오이드 미경험 환자에게 초기 처방 금기. 반드시 경구 오피오이드로 용량 안정화 후 전환. 발열, 악액질 환자: 흡수율 변동 주의.</div>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">응급</span>
+          <div>
+            <div class="card-title">정주 오피오이드 급속 적정</div>
+            <div class="card-subtitle">급성 중증 통증 · 수술 후 통증 즉각 조절</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <div class="alert-box info" style="margin-bottom:1rem">ℹ️ &nbsp;응급 통증 적정 프로토콜 — 매 15–20분마다 NRS 재평가하며 증량</div>
+        <table class="drug-table">
+          <thead><tr><th>약물</th><th>초기 IV bolus</th><th>추가 용량</th><th>모니터링</th></tr></thead>
+          <tbody>
+            <tr><td><span class="drug-name">모르핀 IV</span></td><td class="drug-dose">0.05–0.1 mg/kg</td><td>15분마다 2–5 mg</td><td>RR, SpO₂, 진정도</td></tr>
+            <tr><td><span class="drug-name">하이드로모르폰 IV</span></td><td class="drug-dose">0.01–0.02 mg/kg</td><td>15분마다 0.5–1 mg</td><td>RR, SpO₂, 진정도</td></tr>
+            <tr><td><span class="drug-name">펜타닐 IV</span></td><td class="drug-dose">0.5–1 μg/kg</td><td>10분마다 25–50 μg</td><td>RR, SpO₂, 의식 수준</td></tr>
+          </tbody>
+        </table>
+        <div class="alert-box danger">🚨 &nbsp;<strong>날록손(Naloxone) 비치 필수:</strong> 호흡수 &lt;8회/분, SpO₂ &lt;90%, 진정 심화 시 — 0.1 mg IV 2–3분마다 투여, 최대 0.4 mg</div>
+      </div>
+    </div>
+
+    <div class="protocol-card">
+      <div class="card-header" onclick="toggleCard(this)">
+        <div class="card-header-left">
+          <span class="step-badge">오피오이드 부작용</span>
+          <div>
+            <div class="card-title">예방적 처방 · 부작용 관리</div>
+            <div class="card-subtitle">선제적 처방으로 오피오이드 내약성 향상</div>
+          </div>
+        </div>
+        <span class="expand-icon">▶</span>
+      </div>
+      <div class="card-body">
+        <table class="drug-table">
+          <thead><tr><th>부작용</th><th>약물</th><th>용량</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td><strong>변비</strong><br><small style="color:var(--muted)">(반드시 예방)</small></td><td><span class="drug-name">센나 + 도큐세이트</span></td><td class="drug-dose">센나 2정 BID</td><td>오피오이드 시작과 동시에 처방</td></tr>
+            <tr><td><strong>오심/구토</strong></td><td><span class="drug-name">메토클로프라미드</span></td><td class="drug-dose">10 mg TID</td><td>초기 2–3일, 이후 내성 생기면 중단</td></tr>
+            <tr><td><strong>소양증</strong></td><td><span class="drug-name">하이드록시진</span></td><td class="drug-dose">25 mg q6h PRN</td><td>세로토닌 관여 시 온단세트론 고려</td></tr>
+            <tr><td><strong>진정/졸음</strong></td><td>관찰 후 용량 감량</td><td>—</td><td>심화 시 오피오이드 전환 고려</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SECTION: EQUIANALGESIC ═══ -->
+<div class="section" id="section-equi">
+  <div class="page-title">동등 진통 용량표</div>
+  <div class="page-desc">오피오이드 전환 시 참조 — 모르핀 경구 10 mg을 기준(1.0)으로 한 상대적 효력비. 개인차가 크므로 전환 후 30–50% 감량하여 시작하고 반드시 재적정.</div>
+
+  <div class="alert-box danger" style="margin-bottom:1.5rem">
+    🚨 &nbsp;<strong>임상 경고:</strong> 동등 용량표는 참고치에 불과합니다. 오피오이드 교체 시 <strong>불완전 교차 내성</strong>을 고려하여 계산 용량의 25–50%를 감량 후 시작하십시오.
+  </div>
+
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:1.5rem">
+    <table class="equi-table">
+      <thead>
+        <tr>
+          <th>약물</th>
+          <th>경구 (mg)</th>
+          <th>정주/근주 (mg)</th>
+          <th>비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background:rgba(59,130,246,0.05)">
+          <td><strong style="color:var(--accent)">모르핀</strong> <small style="color:var(--muted)">(기준)</small></td>
+          <td class="drug-dose">30 mg</td>
+          <td class="drug-dose">10 mg</td>
+          <td>경구:비경구 = 3:1</td>
+        </tr>
+        <tr>
+          <td><strong>코데인</strong></td>
+          <td class="drug-dose">200 mg</td>
+          <td class="drug-dose">120 mg</td>
+          <td>모르핀의 약 1/6 효력</td>
+        </tr>
+        <tr>
+          <td><strong>트라마돌</strong></td>
+          <td class="drug-dose">300 mg</td>
+          <td class="drug-dose">300 mg</td>
+          <td>최대 용량 제한 중요</td>
+        </tr>
+        <tr>
+          <td><strong>옥시코돈</strong></td>
+          <td class="drug-dose">20 mg</td>
+          <td class="drug-dose">10 mg</td>
+          <td>경구 생체이용률 ~60–87%</td>
+        </tr>
+        <tr>
+          <td><strong>하이드로모르폰</strong></td>
+          <td class="drug-dose">7.5 mg</td>
+          <td class="drug-dose">1.5 mg</td>
+          <td>모르핀의 약 5–7배 효력 (IV)</td>
+        </tr>
+        <tr>
+          <td><strong>펜타닐 (TDS)</strong></td>
+          <td>—</td>
+          <td class="drug-dose">0.1 mg (IV)</td>
+          <td>25 μg/h patch ≈ 경구 모르핀 60 mg/일</td>
+        </tr>
+        <tr>
+          <td><strong>메타돈</strong></td>
+          <td class="drug-dose">가변적</td>
+          <td class="drug-dose">가변적</td>
+          <td>⚠️ 전문가 상담 필수 — 반감기 매우 가변적</td>
+        </tr>
+        <tr>
+          <td><strong>부프레노르핀 (패치)</strong></td>
+          <td>—</td>
+          <td>—</td>
+          <td>5 μg/h patch ≈ 경구 모르핀 12 mg/일</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert-box info">
+    💡 &nbsp;<strong>전환 공식:</strong> 새 약물 용량 = (현재 약물 총 일일 용량 ÷ 현재 약물 동등 용량) × 새 약물 동등 용량 × 0.5~0.75 (25–50% 감량 적용)
+  </div>
+</div>
+
+<!-- ═══ SECTION: CHECKLIST ═══ -->
+<div class="section" id="section-checklist">
+  <div class="page-title">처방 전 체크리스트</div>
+  <div class="page-desc">오피오이드 및 진통제 처방 전 확인해야 할 임상 안전 항목입니다. 클릭하여 완료 표시.</div>
+
+  <div style="margin-bottom:2rem">
+    <div style="font-family:var(--mono);font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem">▸ 기본 평가</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">통증 강도(NRS/VAS) 및 성격 평가</div>
+          <div class="check-sub">위치, 방사통, 악화/완화 요인, 통증 양상(둔통/예리/작열감/박동성) 기록</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">알레르기 및 과민 반응 확인</div>
+          <div class="check-sub">NSAIDs, 아스피린, 오피오이드 알레르기 이력 조회</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">신장 기능 확인 (eGFR/Cr)</div>
+          <div class="check-sub">eGFR &lt;60: NSAIDs 주의, eGFR &lt;30: 오피오이드 용량 감량</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">간 기능 확인 (AST/ALT/Bilirubin)</div>
+          <div class="check-sub">간기능 저하 시 아세트아미노펜 2,000 mg/일로 제한</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">현재 복용 중인 약물 목록 확인 (DUR 조회)</div>
+          <div class="check-sub">MAO 억제제, 세로토닌 제제, 항응고제, CYP3A4/2D6 상호작용 확인</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:2rem">
+    <div style="font-family:var(--mono);font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem">▸ 오피오이드 처방 시 추가 확인 (Step 2–3)</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">마약류 처방 자격 및 환자 동의서 확인</div>
+          <div class="check-sub">오피오이드 치료 계획, 위험 및 이익 설명 후 서면 동의</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">ORT (Opioid Risk Tool) 시행</div>
+          <div class="check-sub">저위험(0–3점), 중위험(4–7점), 고위험(≥8점) 분류 및 기록</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">벤조디아제핀 동시 처방 여부 확인</div>
+          <div class="check-sub">오피오이드 + 벤조디아제핀: 호흡 억제 위험 2–4배 증가. 불가피 시 최소 용량</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">변비 예방 완하제 처방</div>
+          <div class="check-sub">오피오이드 시작과 동시에 자극성 완하제(센나) 처방. '기다리다' 처방 금지</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">날록손 비치 및 가정 교육</div>
+          <div class="check-sub">중등도 이상 위험 환자: 날록손 처방 및 사용법 교육</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">치료 목표 및 재평가 일정 설정</div>
+          <div class="check-sub">시작 후 24–72시간 내 전화/내원 재평가. 4주 후 정기 추적 관찰 일정 기록</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:2rem">
+    <div style="font-family:var(--mono);font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.75rem">▸ 특수 환자군</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">고령 환자 (65세 이상) — Beers Criteria 확인</div>
+          <div class="check-sub">근이완제·벤조디아제핀·디펜히드라민 고위험. NSAIDs: PPI 병용. 오피오이드: 25–50% 감량 시작</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">임신/수유 여부 확인</div>
+          <div class="check-sub">임신 3기: NSAIDs 금기. 오피오이드: 신생아 금단증후군 위험 고지. 아세트아미노펜 1차 선택</div>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box">✓</div>
+        <div>
+          <div class="check-text">소아 환자 — 체중 기반 용량 계산</div>
+          <div class="check-sub">아세트아미노펜: 10–15 mg/kg. 이부프로펜: 5–10 mg/kg. 코데인: 12세 이하 금기</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<script>
+// ── NAVIGATION ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ── ACCORDION ──
+function toggleCard(header) {
+  header.parentElement.classList.toggle('open');
+}
+
+// ── PAIN SCALE ──
+function updateScore(val) {
+  val = parseInt(val);
+  document.getElementById('pain-slider').value = val;
+  const scoreEl = document.getElementById('nrs-score');
+  const severityBand = document.getElementById('severity-band');
+  const severityLabel = document.getElementById('severity-label');
+  const severityDesc = document.getElementById('severity-desc');
+  const displayNRS = document.getElementById('display-nrs');
+  const displayVAS = document.getElementById('display-vas');
+  const displayStep = document.getElementById('display-step');
+
+  scoreEl.textContent = val;
+  displayNRS.textContent = val + ' / 10';
+  displayVAS.textContent = Math.round(val * 9.5) + ' mm';
+
+  // Update face buttons
+  document.querySelectorAll('.face-btn').forEach(btn => btn.classList.remove('selected'));
+  const faceMap = [0,1,1,3,3,5,5,7,7,9,9];
+  const targetScore = faceMap[val];
+  document.querySelectorAll('.face-btn').forEach(btn => {
+    if (parseInt(btn.getAttribute('onclick').match(/\d+/)[0]) === targetScore) {
+      btn.classList.add('selected');
+    }
+  });
+
+  let color, bg, border, labelText, desc, step;
+  if (val === 0) {
+    color='#6ee7b7'; bg='rgba(16,185,129,0.06)'; border='rgba(16,185,129,0.3)';
+    labelText='통증 없음'; desc='현재 약물 처방이 필요하지 않습니다.'; step='—';
+    scoreEl.style.color='#10b981'; displayNRS.style.color='var(--success)';
+  } else if (val <= 3) {
+    color='#6ee7b7'; bg='rgba(16,185,129,0.06)'; border='rgba(16,185,129,0.3)';
+    labelText='경증 (Mild) — NRS ' + val;
+    desc='WHO Step 1: 비오피오이드(아세트아미노펜, NSAIDs) 단독 처방';
+    step='Step 1'; scoreEl.style.color='#10b981'; displayNRS.style.color='var(--success)';
+  } else if (val <= 6) {
+    color='#fcd34d'; bg='rgba(245,158,11,0.06)'; border='rgba(245,158,11,0.3)';
+    labelText='중등도 (Moderate) — NRS ' + val;
+    desc='WHO Step 2: 약한 오피오이드 + 비오피오이드 병용 처방';
+    step='Step 2'; scoreEl.style.color='#f59e0b'; displayNRS.style.color='var(--warn)';
+  } else {
+    color='#fca5a5'; bg='rgba(239,68,68,0.06)'; border='rgba(239,68,68,0.3)';
+    labelText='중증 (Severe) — NRS ' + val;
+    desc='WHO Step 3: 강한 오피오이드 필요. 즉시 통증 전문 상담 고려.';
+    step='Step 3'; scoreEl.style.color='#ef4444'; displayNRS.style.color='var(--danger)';
+  }
+  severityBand.style.background = bg;
+  severityBand.style.borderColor = border;
+  severityBand.style.color = color;
+  severityLabel.textContent = labelText;
+  severityDesc.textContent = desc;
+  displayStep.textContent = step;
+}
+
+function setScore(val) {
+  updateScore(val);
+}
+
+// ── CHECKLIST ──
+function toggleCheck(item) {
+  item.classList.toggle('done');
+  const box = item.querySelector('.check-box');
+  box.textContent = item.classList.contains('done') ? '✓' : '';
+}
+
+// Init
+updateScore(0);
+</script>
+</body>
+</html>

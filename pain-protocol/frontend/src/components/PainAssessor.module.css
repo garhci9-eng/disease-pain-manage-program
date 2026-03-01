@@ -1,0 +1,178 @@
+.wrap {
+  animation: fadeUp 0.3s ease-out;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.sub {
+  color: var(--text2);
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.scoreDisplay {
+  font-family: var(--serif);
+  font-size: 4rem;
+  line-height: 1;
+  transition: color 0.3s;
+  min-width: 80px;
+  text-align: right;
+}
+
+/* Face Scale */
+.faceScale {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.faceBtn {
+  flex: 1;
+  min-width: 60px;
+  padding: 0.7rem 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.faceBtn:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+}
+
+.selected {
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+}
+
+.faceEmoji { font-size: 1.5rem; }
+.faceLabel { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); }
+
+/* Slider */
+.sliderWrap { margin-bottom: 1.25rem; }
+
+.sliderTrack {
+  position: relative;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.sliderFill {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.1s;
+  pointer-events: none;
+}
+
+.slider {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  height: 20px;
+  opacity: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+
+.ticks {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tick {
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.15s;
+  min-width: 20px;
+  text-align: center;
+}
+.tick:hover { color: var(--text); background: var(--surface2); }
+
+/* Severity */
+.severityBand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  border: 1px solid;
+  margin-bottom: 1.25rem;
+  transition: all 0.3s;
+}
+
+.sevIcon { font-size: 1.4rem; flex-shrink: 0; }
+.sevLabel { font-weight: 600; font-size: 0.95rem; }
+.sevDesc { font-size: 0.78rem; opacity: 0.75; margin-top: 2px; }
+
+.stepBadge {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+
+/* Stats */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.statLabel {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+}
+
+.statValue {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .statsRow { grid-template-columns: repeat(2, 1fr); }
+  .faceScale { gap: 0.3rem; }
+}

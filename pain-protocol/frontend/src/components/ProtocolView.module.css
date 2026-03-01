@@ -1,0 +1,147 @@
+.topBar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.pageTitle {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+}
+.pageSub { color: var(--text2); font-size: 0.8rem; margin-top: 0.3rem; }
+
+.stepFilter {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+.filterBtn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+.filterBtn:hover { border-color: var(--border2); color: var(--text); }
+.filterActive { background: var(--surface2); border-color: var(--accent); color: var(--accent); }
+
+/* Step Section */
+.stepSection { margin-bottom: 2rem; }
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface);
+  border: 1px solid;
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.stepNum {
+  font-family: var(--serif);
+  font-size: 2.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.stepLabel { font-weight: 600; font-size: 1rem; }
+.stepRange { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
+
+.stepDot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+/* Drug Card */
+.drugList { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+.card:hover { border-color: var(--border2); }
+
+.cardHeader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.1rem;
+  background: none;
+  border: none;
+  color: var(--text);
+  text-align: left;
+  gap: 1rem;
+  cursor: pointer;
+}
+
+.cardLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.cardTitle { font-weight: 600; font-size: 0.9rem; }
+.cardMechanism { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+.chevron {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.open .chevron { transform: rotate(90deg); }
+
+.cardBody {
+  padding: 0 1.1rem 1.1rem;
+  border-top: 1px solid var(--border);
+  animation: fadeUp 0.2s ease-out;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  margin-top: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.drugName { font-weight: 600; color: var(--accent2); font-size: 0.82rem; }
+.drugGeneric { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.dose { font-family: var(--mono); font-size: 0.78rem; color: #a5b4fc; }
+.noteCell { font-size: 0.78rem; color: var(--text2); }
+
+.alertSpacing { margin-top: 0.75rem; }
+
+/* Loading */
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+}
+.loadingDot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1.4s ease-in-out infinite;
+}

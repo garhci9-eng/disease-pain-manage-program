@@ -1,0 +1,57 @@
+.wrap { animation: fadeUp 0.3s ease-out; }
+.title { font-family: var(--serif); font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
+.sub { color: var(--text2); font-size: 0.8rem; margin-bottom: 1.5rem; }
+
+.ladder { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 1.5rem; }
+
+.step {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.2s;
+}
+.step:last-child { border-bottom: none; }
+.step:hover { filter: brightness(1.05); }
+
+.stepLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 1.5rem 1.25rem;
+  border-right: 1px solid var(--border);
+  min-width: 90px;
+}
+
+.stepNum { font-family: var(--serif); font-size: 2.8rem; line-height: 1; }
+.stepRange { font-family: var(--mono); font-size: 0.6rem; padding: 2px 8px; border-radius: 20px; white-space: nowrap; }
+
+.stepContent { padding: 1.5rem; flex: 1; }
+.stepLabel { font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+.stepNote { font-size: 0.78rem; color: var(--text2); margin-bottom: 0.75rem; }
+
+.pillList { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pill {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  padding: 2px 10px;
+  border-radius: 20px;
+  border: 1px solid;
+  background: rgba(0,0,0,0.2);
+}
+
+.principles { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+.principlesTitle { font-family: var(--mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 1rem; }
+
+.principleGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.principle { text-align: center; }
+.principleIcon { font-size: 1.5rem; margin-bottom: 0.4rem; }
+.principleTitle { font-weight: 600; font-size: 0.82rem; margin-bottom: 2px; }
+.principleDesc { font-size: 0.72rem; color: var(--text2); }
+
+@media (max-width: 640px) {
+  .principleGrid { grid-template-columns: repeat(2, 1fr); }
+  .stepLeft { min-width: 70px; }
+}

@@ -1,0 +1,96 @@
+.wrap { animation: fadeUp 0.3s ease-out; }
+.title { font-family: var(--serif); font-size: 1.6rem; letter-spacing: -0.02em; margin-bottom: 0.3rem; }
+.sub { color: var(--text2); font-size: 0.8rem; margin-bottom: 0.2rem; }
+.basis { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 1.25rem; }
+
+.tableWrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+.tableWrap table { background: var(--surface); }
+.tableWrap th {
+  background: var(--surface2);
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.tableWrap td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.tableWrap tr:last-child td { border-bottom: none; }
+.tableWrap tbody tr:hover td { background: var(--surface2); }
+
+.highlightRow td { background: rgba(59,130,246,0.05) !important; }
+
+.drugCell { font-weight: 500; display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; }
+.refBadge { font-family: var(--mono); font-size: 0.6rem; background: rgba(59,130,246,0.15); color: var(--accent); padding: 1px 6px; border-radius: 10px; border: 1px solid rgba(59,130,246,0.3); }
+.doseCell { font-family: var(--mono); font-size: 0.8rem; color: #a5b4fc; }
+.ratio { font-family: var(--mono); font-size: 0.75rem; color: var(--accent2); }
+.noteCell { color: var(--text2); font-size: 0.78rem; }
+.loading { padding: 2rem; color: var(--muted); font-family: var(--mono); font-size: 0.8rem; }
+
+/* Calculator */
+.conversionBox { margin-top: 1.25rem; }
+.calcWrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+.calcTitle { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; font-size: 0.9rem; margin-bottom: 1rem; }
+.calcGrid { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 0.75rem; align-items: end; }
+.calcGroup { display: flex; flex-direction: column; gap: 0.4rem; }
+.calcLabel { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+.calcSelect, .calcInput {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 7px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.calcSelect:focus, .calcInput:focus { border-color: var(--accent); }
+.calcBtn {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.55rem 1.25rem;
+  border-radius: 7px;
+  transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.calcBtn:hover { opacity: 0.85; }
+
+.calcResult {
+  margin-top: 1rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
+}
+.resultRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0;
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(30,40,64,0.4);
+}
+.resultRow:last-of-type { border-bottom: none; }
+.resultValue { font-family: var(--mono); font-weight: 600; color: var(--accent2); }
+
+@media (max-width: 640px) {
+  .calcGrid { grid-template-columns: 1fr 1fr; }
+}
